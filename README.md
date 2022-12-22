@@ -19,8 +19,21 @@
 
 This repository has two versions of Conway's Game of Life, one of them (the Vue one) can be acessed via this repository github page.
 
-## Setup guide (Vue.js)
+## Setup guide
 
 ```bash
+
+Python Version (uses python v.3.10.0)
+
+cd life-py
+
+(optional) activater a environment for project dependencies
+
+pip install -r requirements.txt
+
+python life.py
+
+
+Vue version
 doing...
 ```
