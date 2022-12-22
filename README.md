@@ -19,7 +19,7 @@
 
 This repository has two versions of Conway's Game of Life, one of them (the Vue one) can be acessed via this repository github page.
 
-## Setup guide
+## Setup guide (Vue.js)
 
 ```bash
 doing...
