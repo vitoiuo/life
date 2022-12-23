@@ -35,5 +35,12 @@ python life.py
 
 
 Vue version
+
+cd life-vue
+
+npm install
+
+//for local initialization
+npm server
 doing...
 ```

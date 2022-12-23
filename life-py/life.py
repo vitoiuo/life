@@ -1,24 +1,7 @@
-# ## Todo: melhorar inputs
-# # An example code to take matrix input by user  
-  
-# Rows = int(input("Give the number of rows:"))  
-# Columns = int(input("Give the number of columns:"))  
-  
-# # Initializing the matrix  
-# example_matrix = []  
-  
-# # taking RowsxColumns matrix from the user  
-# for i in range(Rows):  
-#     # taking input for the row from the user  
-#     single_row = list(map(int, input().split()))  
-#     # appending the 'single_row' to the 'example_matrix'  
-#     example_matrix.append(single_row)  
-# # printing the matrix given by user  
-# print(example_matrix)  
-
 import copy
 import time
 
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -32,13 +15,16 @@ def init_day_of_life ():
     for i in range(rows):
         single_row = list(map(int, input().split()))
         if (len(single_row) > columns):
-            raise Exception("Não ultrapasse o limite de colunas determinado!")
+            raise ValueError("Não ultrapasse o limite de colunas determinado!")
         matrix.append(single_row)  
 
     #Life game
     board = np.array(matrix)
     while(np.any(board == 1)):
-        print(board)
+        plt.imshow(board)
+        plt.colorbar()
+        plt.grid()
+        plt.show()
         time.sleep(1)
 
         test_board = copy.deepcopy(board)
@@ -62,6 +48,9 @@ def init_day_of_life ():
                 elif(neighbours_number == 3):
                     test_board[ridx, cidx] = 1
         board = test_board
+        next = str(input('Continuar? (Yes or No)'))
+        if(next == 'No'):
+            break
 
 
 init_day_of_life()
