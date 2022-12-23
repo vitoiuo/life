@@ -1,6 +1,7 @@
 import copy
 import time
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -21,8 +22,11 @@ def init_day_of_life ():
     #Life game
     board = np.array(matrix)
     while(np.any(board == 1)):
-        plt.imshow(board)
-        plt.colorbar()
+        colors = ['black', 'white']
+        bounds = [0,1]
+        cmap = mpl.colors.ListedColormap(colors)
+        norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
+        plt.imshow(board, interpolation='none', cmap=cmap, norm=norm)
         plt.grid()
         plt.show()
         time.sleep(1)
