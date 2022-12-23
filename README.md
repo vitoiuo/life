@@ -27,20 +27,24 @@ Python Version (uses python v.3.10.0)
 
 cd life-py
 
-(optional) activater a environment for project dependencies
+#(optional) activate a environment for project dependencies
 
 pip install -r requirements.txt
 
 python life.py
+```
 
-
+```bash
 Vue version
 
 cd life-vue
 
 npm install
 
-//for local initialization
-npm server
+#for local initialization
+npm run serve
 doing...
+
+#for local build
+npm run build
 ```

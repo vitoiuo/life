@@ -19,16 +19,18 @@ def init_day_of_life ():
             raise ValueError("Não ultrapasse o limite de colunas determinado!")
         matrix.append(single_row)  
 
-    #Life game
     board = np.array(matrix)
+
+    colors = ['black', 'white']
+    bounds = [0,1]
+    cmap = mpl.colors.ListedColormap(colors)
+    norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
+    plt.imshow(board, interpolation='none', cmap=cmap, norm=norm)
+    plt.grid()
+    plt.show()
+    #Life game
+
     while(np.any(board == 1)):
-        colors = ['black', 'white']
-        bounds = [0,1]
-        cmap = mpl.colors.ListedColormap(colors)
-        norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
-        plt.imshow(board, interpolation='none', cmap=cmap, norm=norm)
-        plt.grid()
-        plt.show()
         time.sleep(1)
 
         test_board = copy.deepcopy(board)
@@ -52,6 +54,10 @@ def init_day_of_life ():
                 elif(neighbours_number == 3):
                     test_board[ridx, cidx] = 1
         board = test_board
+        
+        plt.imshow(board, interpolation='none', cmap=cmap, norm=norm)
+        plt.grid()
+        plt.show()
         next = str(input('Continuar? (Yes or No)'))
         if(next == 'No'):
             break
