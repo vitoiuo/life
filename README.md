@@ -19,8 +19,7 @@
 
 This repository has two versions of Conway's Game of Life, one of them (the Vue one) can be acessed via this repository github page.
 
-![Alt text](https://file%2B.vscode-resource.vscode-cdn.net/home/victorbarreto/Documentos/busertech-tony/life/assets/life.gif?version%3D1671843195113)
-
+![Alt text](assets/life.gif?version%3D1671843195113)
 
 ## Setup guide
 
