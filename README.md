@@ -18,9 +18,8 @@
 ## This repository
 
 This repository has two versions of Conway's Game of Life, one of them (the Vue one) can be acessed via this repository github page.
-<div style='text-align: center'>
-  <img src="assets/life.gif" alt="">
-</div>
+
+![Alt text](assets/life.gif?version%3D1671843195113)
 
 ## Setup guide
 
