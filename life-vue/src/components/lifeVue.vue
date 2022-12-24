@@ -1,23 +1,26 @@
 <template>
     <div>
-        <label for="colsInpt">Colunas</label>
-        <input id='colsInpt' type="number" v-model.number='numCols'>
+        <section style="margin-top: 16px; display: flex; justify-content: center; gap: 16px">
+            <label for="colsInpt">Colunas</label>
+            <input id='colsInpt' type="number" v-model.number='numCols'  min="1" max="50">
 
-        <label for="rowsInpt">Linhas</label>
-        <input id='rowsInpt' type="number" v-model.number='numRows'>
-        <div>
+            <label for="rowsInpt">Linhas</label>
+            <input id='rowsInpt' type="number" v-model.number='numRows'  min="1" max="50">
+        </section>
+        
+        <div class='board'>
             <div v-for='r in numRows' :key='r'> 
                 <life-cell
                     v-for="c in numCols" :key='r+c'
-                    @update-alive='updateCell($event,r-1,c-1)'
-                    :alive="matrice[r-1][c-1]">
+                    v-bind:alive.sync="matrice[r-1][c-1]">
                 </life-cell>
             </div>
+            <section style="margin-top: 16px; display: flex; justify-content: center; gap: 16px">
+                <button @click='init'>START</button>
+                <button @click='stop = true'>STOP</button>
+                <button @click='clear'>CLEAR</button>
+            </section>
         </div>
-
-        <button @click='init'>START</button>
-        <button @click='stop = true'>STOP</button>
-        <button @click='clear'>CLEAR</button>
     </div>
 </template>
 
@@ -29,21 +32,17 @@ export default {
         lifeCell
     },
     created () {
-        const initialMatrice = Array(this.numRows).fill(false).map(()=>Array(this.numCols).fill(false))
-        this.initMatrice(initialMatrice)
+        this.matrice = Array(this.numRows).fill(false).map(()=>Array(this.numCols).fill(false))
     },
     data() {
         return {
-            numCols: 24,
-            numRows: 24,
+            numCols: 12,
+            numRows: 12,
             matrice: undefined,
             stop: false
         }
     },
     methods: {
-        initMatrice(matrice) {
-            this.matrice = matrice
-        },
         init() {
             this.stop = false
             const rotina = setInterval(() => {
@@ -52,7 +51,6 @@ export default {
 
                 Array.prototype.forEach.call(this.matrice, (row,ri) => {
                     row.forEach((_,ci) => {
-
                         let neighbourHood
 
                         if(ri === 0 && ci === 0) {
@@ -83,25 +81,15 @@ export default {
                             neighbourHood = this.matrice.slice(ri-1, ri+2).map(e => e.slice(ci-1, ci+2))
                         }
                         neighbourHood = neighbourHood.flat();
-                        const neighboursAlive = neighbourHood.filter(neighbour => neighbour === true).length
+                        let neighboursAlive = neighbourHood.filter(neighbour => neighbour === true).length
 
-                        if(this.matrice[ri][ci]) {
-                            switch (neighboursAlive-1) {
-                                case 0:
-                                    matrice_clone[ri][ci] = false
-                                    break
-                                case 1:
-                                    matrice_clone[ri][ci] = false
-                                    break
-                                case 2:
-                                    matrice_clone[ri][ci] = true
-                                    break
-                                case 3:
-                                    matrice_clone[ri][ci] = true
-                                    break
-                                default:
-                                    matrice_clone[ri][ci] = false
-                                    break
+                        if (this.matrice[ri][ci]) {
+                            neighboursAlive-=1
+                            if ([2,3].includes(neighboursAlive)) {
+                                matrice_clone[ri][ci] = true
+                            }
+                            else {
+                                matrice_clone[ri][ci] = false
                             }
                         }
                         else if(neighboursAlive === 3) {
@@ -111,12 +99,8 @@ export default {
                  })
                 this.matrice = JSON.parse(JSON.stringify(matrice_clone))
 
-                    if (!this.matrice.flat().some(e => e === true) || this.stop) clearInterval(rotina)
-                }, 1000)
-        },
-        updateCell(newValue, r, c) {
-            this.$set(this.matrice[r], c, newValue)
-            this.$forceUpdate()
+                if (!this.matrice.flat().some(e => e === true) || this.stop) clearInterval(rotina)
+            }, 1000)
         },
         clear () {
             this.matrice = Array(this.numRows).fill(false).map(()=>Array(this.numCols).fill(false))
@@ -124,13 +108,18 @@ export default {
     },
     watch: {
         numCols(newValue) {
-            const newMatrice = Array(this.numRows).fill(false).map(()=>Array(newValue).fill(false))
-            this.initMatrice(newMatrice)
+            this.matrice = Array(this.numRows).fill(false).map(()=>Array(newValue).fill(false))
         },
         numRows(newValue) {
-            const newMatrice = Array(newValue).fill(false).map(()=>Array(this.numCols).fill(false))
-            this.initMatrice(newMatrice)
+           this.matrice = Array(newValue).fill(false).map(()=>Array(this.numCols).fill(false))
         }
     }
 }
 </script>
+
+<style scoped>
+.board {
+    margin: 24px 0;
+    text-align: center;
+}
+</style>

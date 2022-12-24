@@ -12,7 +12,7 @@ export default {
     },
     methods: {
         changeState () {
-            this.$emit('update-alive', !this.alive)
+            this.$emit('update:alive', !this.alive)
         }, 
     }
 }
@@ -22,12 +22,19 @@ export default {
 .box {
     display: inline-block;
     border: 1px solid gray;
-    padding: 8px;
+    padding: 12px;
     color: white;
     background-color: black;
 }
 .alive {
     color: black;
     background-color: white;
+}
+
+@media (min-width: 1200px)
+{
+  .box {
+    padding: 16px;
+  }
 }
 </style>

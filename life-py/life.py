@@ -8,7 +8,6 @@ import numpy as np
 
 def init_day_of_life ():
 
-    #User entry
     rows = int(input("Give the number of rows:"))  
     columns = int(input("Give the number of columns:"))
 
@@ -28,7 +27,6 @@ def init_day_of_life ():
     plt.imshow(board, interpolation='none', cmap=cmap, norm=norm)
     plt.grid()
     plt.show()
-    #Life game
 
     while(np.any(board == 1)):
         time.sleep(1)
