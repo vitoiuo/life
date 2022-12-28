@@ -6,27 +6,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def init_day_of_life ():
-
+def init_user_interaction ():
     rows = int(input("Give the number of rows:"))  
     columns = int(input("Give the number of columns:"))
 
     matrix = []
-    for i in range(rows):
+    for _ in range(rows):
         single_row = list(map(int, input().split()))
         if (len(single_row) > columns):
             raise ValueError("Não ultrapasse o limite de colunas determinado!")
-        matrix.append(single_row)  
+        matrix.append(single_row)
 
+    init_day_of_life(matrix)
+
+def init_day_of_life (matrix):
     board = np.array(matrix)
-
-    colors = ['black', 'white']
-    bounds = [0,1]
-    cmap = mpl.colors.ListedColormap(colors)
-    norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
-    plt.imshow(board, interpolation='none', cmap=cmap, norm=norm)
-    plt.grid()
-    plt.show()
+    show_plot(board)
 
     while(np.any(board == 1)):
         time.sleep(1)
@@ -43,8 +38,6 @@ def init_day_of_life ():
 
                 if(cel_value):
                     match neighbours_number-1:
-                        case 0 | 1:
-                            test_board[ridx, cidx] = 0
                         case 2 | 3:
                             test_board[ridx, cidx] = 1
                         case other:
@@ -53,12 +46,20 @@ def init_day_of_life ():
                     test_board[ridx, cidx] = 1
         board = test_board
         
-        plt.imshow(board, interpolation='none', cmap=cmap, norm=norm)
-        plt.grid()
-        plt.show()
+        show_plot(board)
+
         next = str(input('Continuar? (Yes or No)'))
         if(next == 'No'):
             break
 
+def show_plot(board):
+    colors = ['black', 'white']
+    bounds = [0,1]
 
-init_day_of_life()
+    cmap = mpl.colors.ListedColormap(colors)
+    norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
+    plt.imshow(board, interpolation='none', cmap=cmap, norm=norm)
+    plt.grid()
+    plt.show()
+
+init_user_interaction()
