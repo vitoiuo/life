@@ -120,7 +120,7 @@ export default {
                     matrice_clone[row][col] = false
                 }
             }
-                else if(neighboursAlive === 3) {
+            else if(neighboursAlive === 3) {
                 matrice_clone[row][col] = true
             }
         },
