@@ -25,7 +25,7 @@ This repository has two versions of Conway's Game of Life, one of them (the Vue 
 
 ```bash
 
-Python Version (uses python v.3.10.0)
+Python Version #(uses python v.3.10.0)
 
 cd life-py
 
@@ -37,10 +37,11 @@ python life.py
 ```
 
 ```bash
-Vue version
+Vue version #(uses node v14.20.1)
 
 cd life-vue
 
+nvm use # if you have node version manager
 npm install
 
 # for local initialization
