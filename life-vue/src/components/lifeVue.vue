@@ -11,7 +11,7 @@
             </div>
             <div>
                 <label for="rowsInpt">Intervalo</label>
-                <input id='speedInput' type="range"  min="100" max="2000" v-model.number='gameSpeed'>
+                <input id='speedInput' type="range"  min="100" max="2000" v-model.number='gameSpeed' :disabled='gameRunning'>
             </div>
         </section>
         
@@ -23,9 +23,9 @@
                 </life-cell>
             </div>
             <section style="margin-top: 16px; display: flex; justify-content: center; gap: 16px">
-                <button @click='init'>START</button>
+                <button @click='initGame'>START</button>
                 <button @click='stop = true'>STOP</button>
-                <button @click='clear'>CLEAR</button>
+                <button @click='clearBoard'>CLEAR</button>
             </section>
         </div>
     </div>
@@ -47,12 +47,14 @@ export default {
             numRows: 12,
             matrice: undefined,
             stop: false,
+            gameRunning: false,
             gameSpeed: 1000
         }
     },
     methods: {
-        init() {
+        initGame () {
             this.stop = false
+            this.gameRunning = true
             const rotina = setInterval(() => {
                 console.log('Madeiraaaa')
                 const matrice_clone =  JSON.parse(JSON.stringify(this.matrice))
@@ -61,58 +63,70 @@ export default {
                     row.forEach((_,ci) => {
                         let neighbourHood
 
-                        if(ri === 0 && ci === 0) {
-                            neighbourHood = this.matrice.slice(ri, ri+2).map(e => e.slice(ci, ci+2))
+                        const right = ci+2
+                        const left = ci - 1
+                        const bottom = ri + 2
+                        const top = ri - 1
+                        const center = {row: ri, col: ci}
+
+                        if(center.row === 0 && center.col === 0) {
+                            neighbourHood = this.matrice.slice(center.row, bottom).map(e => e.slice(center.col, right))
                         }
-                        else if (ri === this.matrice.length-1 && ci === 0) {
-                            neighbourHood = this.matrice.slice(ri-1, ri+1).map(e => e.slice(ci, ci+2))
+                        else if (center.row === this.matrice.length-1 && center.col === 0) {
+                            neighbourHood = this.matrice.slice(top, center.row+1).map(e => e.slice(center.col, right))
                         }
-                        else if (ri === 0 && ci === row.length-1) {
-                            neighbourHood = this.matrice.slice(ri, ri+2).map(e => e.slice(ci-1, ci+1))
+                        else if (center.row === 0 && center.col === row.length-1) {
+                            neighbourHood = this.matrice.slice(center.row, bottom).map(e => e.slice(left, center.col+1))
                         }
-                        else if (ri === this.matrice.length-1 && ci === row.length-1) {
-                            neighbourHood = this.matrice.slice(ri-1, ri+1).map(e => e.slice(ci-1, ci+1))
+                        else if (center.row === this.matrice.length-1 && center.col === row.length-1) {
+                            neighbourHood = this.matrice.slice(top, center.row+1).map(e => e.slice(left, center.col+1))
                         }
-                        else if (ri === 0) {
-                            neighbourHood = this.matrice.slice(ri, ri+2).map(e => e.slice(ci-1, ci+2))
+                        else if (center.row === 0) {
+                            neighbourHood = this.matrice.slice(center.row, bottom).map(e => e.slice(left, right))
                         }
-                        else if (ri === this.matrice.length-1) {
-                            neighbourHood = this.matrice.slice(ri-1, ri+1).map(e => e.slice(ci-1, ci+2))
+                        else if (center.row === this.matrice.length-1) {
+                            neighbourHood = this.matrice.slice(top, center.row+1).map(e => e.slice(left, right))
                         }
-                        else if (ci === 0) {
-                            neighbourHood = this.matrice.slice(ri-1, ri+2).map(e => e.slice(ci, ci+2))
+                        else if (center.col === 0) {
+                            neighbourHood = this.matrice.slice(top, bottom).map(e => e.slice(center.col, right))
                         }
-                        else if ((ci === row.length-1)) {
-                            neighbourHood = this.matrice.slice(ri-1, ri+2).map(e => e.slice(ci-1, ci+1))
+                        else if ((center.col === row.length-1)) {
+                            neighbourHood = this.matrice.slice(top, bottom).map(e => e.slice(left, center.col+1))
                         }
                         else {
-                            neighbourHood = this.matrice.slice(ri-1, ri+2).map(e => e.slice(ci-1, ci+2))
+                            neighbourHood = this.matrice.slice(top, bottom).map(e => e.slice(left, right))
                         }
                         neighbourHood = neighbourHood.flat();
                         let neighboursAlive = neighbourHood.filter(neighbour => neighbour === true).length
 
-                        if (this.matrice[ri][ci]) {
-                            neighboursAlive-=1
-                            if ([2,3].includes(neighboursAlive)) {
-                                matrice_clone[ri][ci] = true
-                            }
-                            else {
-                                matrice_clone[ri][ci] = false
-                            }
-                        }
-                        else if(neighboursAlive === 3) {
-                            matrice_clone[ri][ci] = true
-                        }
+                        this.buildNewMatrice(matrice_clone, neighboursAlive, ri, ci)
                     })
                  })
                 this.matrice = JSON.parse(JSON.stringify(matrice_clone))
 
-                if (!this.matrice.flat().some(e => e === true) || this.stop) clearInterval(rotina)
+                if (!this.matrice.flat().some(e => e === true) || this.stop){
+                    clearInterval(rotina)
+                    this.gameRunning = false
+                } 
             }, this.gameSpeed)
         },
-        clear () {
+        buildNewMatrice (matrice_clone, neighboursAlive, row, col) {
+            if (this.matrice[row][col]) {
+                neighboursAlive-=1
+                if ([2,3].includes(neighboursAlive)) {
+                    matrice_clone[row][col] = true
+                }
+                else {
+                    matrice_clone[row][col] = false
+                }
+            }
+                else if(neighboursAlive === 3) {
+                matrice_clone[row][col] = true
+            }
+        },
+        clearBoard () {
             this.matrice = Array(this.numRows).fill(false).map(()=>Array(this.numCols).fill(false))
-        }
+        },
     },
     watch: {
         numCols(newValue) {
@@ -120,7 +134,7 @@ export default {
         },
         numRows(newValue) {
            this.matrice = Array(newValue).fill(false).map(()=>Array(this.numCols).fill(false))
-        }
+        },
     }
 }
 </script>
@@ -129,6 +143,5 @@ export default {
 .board {
     margin: 24px 0;
     text-align: center;
-    align-items: ;
 }
 </style>
