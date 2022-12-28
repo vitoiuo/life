@@ -1,11 +1,18 @@
 <template>
     <div>
-        <section style="margin-top: 16px; display: flex; justify-content: center; gap: 16px">
-            <label for="colsInpt">Colunas</label>
-            <input id='colsInpt' type="number" v-model.number='numCols'  min="1" max="50">
-
-            <label for="rowsInpt">Linhas</label>
-            <input id='rowsInpt' type="number" v-model.number='numRows'  min="1" max="50">
+        <section style="margin-top: 16px; display: flex;flex-direction:column; align-items: center; gap: 16px">
+            <div>
+                <label for="colsInpt">Colunas</label>
+                <input id='colsInpt' type="range" v-model.number='numCols'  min="1" max="50">
+            </div>
+            <div>
+                <label for="rowsInpt">Linhas</label>
+                <input id='rowsInpt' type="range" v-model.number='numRows'  min="1" max="50">
+            </div>
+            <div>
+                <label for="rowsInpt">Intervalo</label>
+                <input id='speedInput' type="range"  min="100" max="2000" v-model.number='gameSpeed'>
+            </div>
         </section>
         
         <div class='board'>
@@ -39,7 +46,8 @@ export default {
             numCols: 12,
             numRows: 12,
             matrice: undefined,
-            stop: false
+            stop: false,
+            gameSpeed: 1000
         }
     },
     methods: {
@@ -100,7 +108,7 @@ export default {
                 this.matrice = JSON.parse(JSON.stringify(matrice_clone))
 
                 if (!this.matrice.flat().some(e => e === true) || this.stop) clearInterval(rotina)
-            }, 1000)
+            }, this.gameSpeed)
         },
         clear () {
             this.matrice = Array(this.numRows).fill(false).map(()=>Array(this.numCols).fill(false))
@@ -121,5 +129,6 @@ export default {
 .board {
     margin: 24px 0;
     text-align: center;
+    align-items: ;
 }
 </style>
