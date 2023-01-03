@@ -19,6 +19,10 @@
 
 This repository has two versions of Conway's Game of Life, one of them (the Vue one) can be acessed via this repository github page.
 
+### Python Version
+
+![Alt text](assets/life-python.gif?version%3D1671843195113)
+### Vue version
 ![Alt text](assets/life.gif?version%3D1671843195113)
 
 ## Setup guide

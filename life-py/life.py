@@ -7,6 +7,7 @@ import numpy as np
 
 
 def init_user_interaction ():
+    print("Game of life: Type 1 to generate an alive cell and for a dead one. Let's build your board!")
     rows = int(input("Give the number of rows:"))  
     columns = int(input("Give the number of columns:"))
 
