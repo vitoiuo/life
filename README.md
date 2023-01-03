@@ -23,7 +23,7 @@ This repository has two versions of Conway's Game of Life, one of them (the Vue 
 
 ![Alt text](assets/life-python.gif?version%3D1671843195113)
 
-### [Vue version](https://vitoiuo.github.io/life/){:target="_blank"}
+### [Vue version](https://vitoiuo.github.io/life/)
 
 ![Alt text](assets/life.gif?version%3D1671843195113)
 
